@@ -18,8 +18,8 @@ public class LoginPanel extends JPanel {
         // Crear y configurar la barra superior (topBar)
         JPanel topBar = new JPanel();
         topBar.setBackground(new Color(30, 136, 229)); // Azul
-        topBar.setPreferredSize(new Dimension(600, 50)); // Ajustar altura
-        this.add(topBar, BorderLayout.NORTH);  // Se coloca arriba
+        topBar.setPreferredSize(new Dimension(600, 50));
+        this.add(topBar, BorderLayout.NORTH);
 
         // Crear panel para el formulario
         JPanel formPanel = new JPanel(new GridBagLayout());
@@ -28,7 +28,7 @@ public class LoginPanel extends JPanel {
 
         // Agregar el logo al formulario
         JLabel logoLabel = new JLabel();
-        ImageIcon logoIcon = new ImageIcon("src/main/recursos/Logo.jpg"); // Ruta del logo
+        ImageIcon logoIcon = new ImageIcon("src/main/recursos/Logo.jpg");
         logoLabel.setIcon(new ImageIcon(logoIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
         logoLabel.setHorizontalAlignment(JLabel.CENTER);
 

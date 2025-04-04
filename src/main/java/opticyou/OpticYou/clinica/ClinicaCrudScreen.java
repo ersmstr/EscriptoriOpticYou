@@ -129,7 +129,7 @@ public class ClinicaCrudScreen extends JPanel {
         buttonPanel.add(btnAfegir);
         buttonPanel.add(btnActualitzar);
         buttonPanel.add(btnEliminar);
-        buttonPanel.add(btnTornar);
+
 
         // Col·locar el panell de botons al formulari
         gbc.gridx = 0;
@@ -137,6 +137,12 @@ public class ClinicaCrudScreen extends JPanel {
         gbc.gridwidth = 2;  // El panell de botons ocupa dues columnes
         gbc.insets = new Insets(10, 10, 10, 10);
         leftPanel.add(buttonPanel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(5, 10, 10, 10);
+        leftPanel.add(btnTornar, gbc);
 
         // Panell dret per a la taula
         JPanel rightPanel = new JPanel(new GridBagLayout());
@@ -194,13 +200,17 @@ public class ClinicaCrudScreen extends JPanel {
 
 
         // Crear una divisió en el BorderLayout
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
+      //  JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel);
+        JScrollPane scrollLeft = new JScrollPane(leftPanel);
+        scrollLeft.setPreferredSize(new Dimension(400, 500)); // o ajusta segons et convingui
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollLeft, rightPanel);
+
         splitPane.setDividerLocation(400);  // Ajustar la posició de la divisió
         splitPane.setResizeWeight(0.5);  // Permetre redimensionar equitativament
         add(splitPane, BorderLayout.CENTER);
 
         // Ajustar mida del panell
-        setPreferredSize(new Dimension(900, 400));
+        setPreferredSize(new Dimension(1000, 600));
     }
 
     // Mètodes d'accés als camps, per obtenir els valors del formulari:

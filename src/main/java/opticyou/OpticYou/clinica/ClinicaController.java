@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class ClinicaController {
+
     private ClinicaCrudScreen screen;
     private ClinicaService service;
     private String token;
@@ -28,36 +29,46 @@ public class ClinicaController {
 
     private void initListeners() {
         screen.setAfegirListener(e -> {
-        String nom = screen.getNomCentre();
-        String direccio = screen.getDireccio();
-        String telefon = screen.getTelefon();
-        String horariObertura = screen.getHorariApertura();
-        String horariTancament = screen.getHorariTancament();
-        String email = screen.getEmail();
+            String nom = screen.getNomCentre();
+            String direccio = screen.getDireccio();
+            String telefon = screen.getTelefon();
+            String horariObertura = screen.getHorariApertura();
+            String horariTancament = screen.getHorariTancament();
+            String email = screen.getEmail();
 
             if (nom.isBlank() || direccio.isBlank() || telefon.isBlank()
                     || horariObertura.isBlank() || horariTancament.isBlank() || email.isBlank()) {
 
-                JOptionPane.showMessageDialog(screen, "⚠️ Tots els camps són obligatoris.", "Formulari incomplet", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(screen, "Tots els camps són obligatoris.", "Formulari incomplet", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-
             Clinica clinica = screen.crearClinicaDesdeFormulario();
-            clinica.setIdClinica(0L);
+            clinica.setIdClinica(0L); // o null si ho permet
 
-            service.agregarClinica(clinica, token); // Has de tenir aquest mètode
-            // Opcional: tornar a carregar
-            carregarClinicas();
-            screen.clearForm();
+            service.agregarClinica(clinica, token, new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        JOptionPane.showMessageDialog(screen, "Clínica creada correctament.");
+                        screen.clearForm();
+                        carregarClinicas(); // només un cop creada
+                    } else {
+                        JOptionPane.showMessageDialog(screen, "Error creant clínica. Codi: " + response.code(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    JOptionPane.showMessageDialog(screen, "Error de connexió: " + t.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
         });
 
-        screen.setEliminarListener(e -> {
-            eliminarClinicaSeleccionada();
-        });
+        screen.setEliminarListener(e -> eliminarClinicaSeleccionada());
         screen.setActualitzarListener(e -> actualitzarClinicaSeleccionada());
-
     }
+
 
 
     public void carregarClinicas() {

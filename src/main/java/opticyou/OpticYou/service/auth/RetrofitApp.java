@@ -6,11 +6,13 @@ package opticyou.OpticYou.service.auth;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import opticyou.OpticYou.clients.ClientApi;
 import opticyou.OpticYou.clinica.ClinicaApi;
+import opticyou.OpticYou.historial.HistorialApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiClient {
+public class RetrofitApp {
     private static final String BASE_URL = "http://host.docker.internal:8083/";
     private static Retrofit retrofit;
 
@@ -33,9 +35,11 @@ public class ApiClient {
         return retrofit;
     }
     // Método para obtener el cliente de autenticación (Login/Logout)
-    public static ApiClient getClientApi() {
-        return getClient().create(ApiClient.class);
-    }
+    public static RetrofitApp getClientApi() {
+        return getClient().create(RetrofitApp.class);
+   }
+
+
 
     // Método para obtener el cliente de clínicas
     public static ClinicaApi getClinicaApi(String token) {
@@ -57,5 +61,46 @@ public class ApiClient {
 
         return retrofitWithToken.create(ClinicaApi.class);
     }
+
+
+
+    public static ClientApi getClientApi(String token) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    return chain.proceed(
+                            chain.request().newBuilder()
+                                    .header("Authorization", "Bearer " + token)
+                                    .build());
+                })
+                .build();
+
+        Retrofit retrofitWithToken = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofitWithToken.create(ClientApi.class);
+    }
+    public static HistorialApi getHistorialApi(String token) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    return chain.proceed(
+                            chain.request().newBuilder()
+                                    .header("Authorization", "Bearer " + token)
+                                    .build());
+                })
+                .build();
+
+        Retrofit retrofitWithToken = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofitWithToken.create(HistorialApi.class);
+    }
+
+
 }
 

@@ -7,9 +7,14 @@ import opticyou.OpticYou.clinica.ClinicaController;
 import opticyou.OpticYou.service.auth.LogoutService;
 import opticyou.OpticYou.ui.InitScreen;
 import opticyou.OpticYou.clinica.ClinicaCrudScreen;
+import opticyou.OpticYou.clients.ClientCrudScreen;
+import opticyou.OpticYou.clients.ClientController;
+import opticyou.OpticYou.historial.HistorialCrudScreen;
+import opticyou.OpticYou.historial.HistorialController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class AdminPanelScreen {
     private static final String APP_NAME = "OpticYou";
@@ -17,66 +22,132 @@ public class AdminPanelScreen {
     private String token;
 
     public AdminPanelScreen(String token) {
+        this.token = token;
+
         JFrame frame = new JFrame(APP_NAME + " - PANELL ADMINISTRADOR");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 300);
+        frame.setSize(800, 600);
         frame.setLayout(new BorderLayout());
 
-        //color fons pantalla
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(new Color(173, 216, 230));
+        Color backgroundColor = new Color(173, 216, 230);
 
+        // 🔹 HEADER amb el logo
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(backgroundColor);
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Panell del menú vertical
-        //JPanel menuPanel = new JPanel();
-        menuPanel = new JPanel();
-        menuPanel.setLayout(new GridLayout(6, 1, 10, 10)); // 6 files, 1 columna
-        menuPanel.setBackground(new Color(173, 216, 230)); // blau
+        // 🔹 Logo a la dreta (amb redimensionament)
+        URL logoUrl = getClass().getResource("/recursos/Logo.jpg");
+        if (logoUrl != null) {
+            ImageIcon originalIcon = new ImageIcon(logoUrl);
+            Image scaledImage = originalIcon.getImage().getScaledInstance(120, 100, Image.SCALE_SMOOTH);
+            ImageIcon scaledIcon = new ImageIcon(scaledImage);
+            JLabel logoLabel = new JLabel(scaledIcon);
+            headerPanel.add(logoLabel, BorderLayout.WEST);
+        } else {
+            System.out.println("⚠️ No s'ha trobat la imatge del logo.");
+            JLabel placeholder = new JLabel("[Logo]");
+            headerPanel.add(placeholder, BorderLayout.WEST);
+        }
 
-        // Crear botons del menú
+        frame.add(headerPanel, BorderLayout.NORTH);
+
+        // 🔹 Crear panell per al menú de botons
+        menuPanel = new JPanel(new GridLayout(6, 1, 10, 10));
+        menuPanel.setBackground(backgroundColor);
+
         JButton btnClients = createStyledButton("Gestió de Clients");
         JButton btnTreballadors = createStyledButton("Gestió de Treballadors");
         JButton btnClinica = createStyledButton("Gestió de Clíniques");
         JButton btnHistorials = createStyledButton("Gestió de Historials");
         JButton logoutButton = createStyledButton("Logout");
 
-        // afegir botons i embolicar a un wrap
         menuPanel.add(wrapButton(btnClients));
         menuPanel.add(wrapButton(btnTreballadors));
         menuPanel.add(wrapButton(btnClinica));
         menuPanel.add(wrapButton(btnHistorials));
-        menuPanel.add(Box.createVerticalGlue()); // Espai buit
+        menuPanel.add(Box.createVerticalGlue());
         menuPanel.add(wrapButton(logoutButton));
 
-        // Accions per als botons
-        btnClients.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Gestió de Clients"));
-        btnTreballadors.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Gestió de Treballadors"));
-        btnHistorials.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Gestió de Historials"));
-        //acciones per obrir el CRUD
-        btnClinica.addActionListener(e ->{
-            //instancia
-            ClinicaCrudScreen clinicaCrudScreen = new ClinicaCrudScreen(token);
-            ClinicaController controller = new ClinicaController(clinicaCrudScreen, token);
-            clinicaCrudScreen.setController(controller);
+        // 🔹 Títol damunt dels botons
+        JLabel titleLabel = new JLabel("Panell d'Administrador", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
-            // Afegim listener del botó Tornar
-                clinicaCrudScreen.setTornarListener(ev -> {
+        // 🔹 Panel contenidor del títol + menú
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setBackground(backgroundColor);
+        contentPanel.add(titleLabel, BorderLayout.NORTH);
+        contentPanel.add(menuPanel, BorderLayout.CENTER);
+
+        frame.add(contentPanel, BorderLayout.CENTER);
+
+        // 🔹 Accions dels botons
+
+        btnTreballadors.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Gestió de Treballadors"));
+        btnHistorials.addActionListener(e ->{
+            HistorialCrudScreen historialCrudScreen = new HistorialCrudScreen(token);
+            HistorialController historialController = new HistorialController(historialCrudScreen, token);
+            historialCrudScreen.setController(historialController);
+
+            historialCrudScreen.setTornarListener(ev ->{
+
                 frame.getContentPane().removeAll();
-                frame.add(menuPanel, BorderLayout.CENTER); // tornem a afegir el menú
+                frame.add(headerPanel, BorderLayout.NORTH);
+                frame.add(contentPanel, BorderLayout.CENTER);
+                frame.revalidate();
+                frame.repaint();
+            });
+            frame.getContentPane().removeAll();
+            frame.add(headerPanel, BorderLayout.NORTH);
+            frame.add(historialCrudScreen, BorderLayout.CENTER);
+            frame.revalidate();
+            frame.repaint();
+        });
+
+
+        btnClients.addActionListener(e -> {
+            ClientCrudScreen clientCrudScreen = new ClientCrudScreen(token);
+            ClientController clientController = new ClientController(clientCrudScreen, token);
+            clientCrudScreen.setController(clientController);
+
+            clientCrudScreen.setTornarListener(ev -> {
+                frame.getContentPane().removeAll();
+                frame.add(headerPanel, BorderLayout.NORTH);
+                frame.add(contentPanel, BorderLayout.CENTER);
                 frame.revalidate();
                 frame.repaint();
             });
 
-            //afegir el CRUD
-            frame.getContentPane().removeAll();  // Limpiar el contenido actual
-            frame.add(clinicaCrudScreen, BorderLayout.CENTER);  // Agregar la pantalla CRUD
-            frame.revalidate();  // Actualizar la interfaz
+            frame.getContentPane().removeAll();
+            frame.add(headerPanel, BorderLayout.NORTH);
+            frame.add(clientCrudScreen, BorderLayout.CENTER);
+            frame.revalidate();
+            frame.repaint();
+        });
+
+        btnClinica.addActionListener(e -> {
+            ClinicaCrudScreen clinicaCrudScreen = new ClinicaCrudScreen(token);
+            ClinicaController controller = new ClinicaController(clinicaCrudScreen, token);
+            clinicaCrudScreen.setController(controller);
+
+            clinicaCrudScreen.setTornarListener(ev -> {
+                frame.getContentPane().removeAll();
+                frame.add(headerPanel, BorderLayout.NORTH);
+                frame.add(contentPanel, BorderLayout.CENTER);
+                frame.revalidate();
+                frame.repaint();
+            });
+
+            frame.getContentPane().removeAll();
+            frame.add(headerPanel, BorderLayout.NORTH); // mantenir el header
+            frame.add(clinicaCrudScreen, BorderLayout.CENTER);
+            frame.revalidate();
             frame.repaint();
         });
 
         logoutButton.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(
-
                     frame,
                     "Estàs segur que vols tancar sessió?",
                     "Confirmar logout",
@@ -88,51 +159,31 @@ public class AdminPanelScreen {
                 LogoutService logoutService = new LogoutService();
                 logoutService.logout(token);
                 frame.dispose();
-
-                //tornar a login
                 new InitScreen("OpticYou");
             }
         });
 
-        // Afegir el panell al frame
-        frame.add(menuPanel, BorderLayout.CENTER);
-
-
-        // Afegir un panell per el logo a la dreta
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // A la dreta
-        logoPanel.setBackground(new Color(173, 216, 230)); // Fons com al principal
-        JLabel logoLabel = new JLabel(new ImageIcon("src/main/recursos/Logo.jpg")); // Ruta del logo
-        logoPanel.add(logoLabel);
-
-        // Afegir el logo a dreta del frame
-        frame.add(logoPanel, BorderLayout.EAST);
-
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
-
     }
 
-    //mètode per botons
-    private JPanel wrapButton(JButton button) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Centra el botón
-        panel.setOpaque(false); // fer que el panell sigui transparent
-        panel.add(button);
-        return panel;
-    }
-
-    // Métode per disseny botons
+    // 🔸 Botó amb estil
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
-        button.setBackground(new Color(0, 102, 204)); // Azul oscuro
+        button.setBackground(new Color(0, 102, 204));
         button.setForeground(Color.WHITE);
         button.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        button.setPreferredSize(new Dimension(250, 40)); // Establece un tamaño fijo para los botones
+        button.setPreferredSize(new Dimension(250, 40));
         return button;
     }
 
-
+    // 🔸 Envolta un botó amb panell centrat
+    private JPanel wrapButton(JButton button) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.setOpaque(false);
+        panel.add(button);
+        return panel;
+    }
 }
