@@ -15,7 +15,7 @@ import retrofit2.Response;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class LoginServidor {
+public class LoginServidorIntegracioTest {
 
     private AuthService authService;
 

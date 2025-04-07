@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Autor: mrami
  */
-public class RolsServidor {
+public class RolsServidorIntegracioTest {
 
     @Test
     public void testLoginAdmin() {

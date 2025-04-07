@@ -7,7 +7,9 @@ import retrofit2.Response;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-
+/**
+ * Autor: mrami
+ */
 public class ClinicaController {
 
     private ClinicaCrudScreen screen;
@@ -20,8 +22,6 @@ public class ClinicaController {
         this.screen = screen;
         this.token = token;
         this.service = new ClinicaService();
-
-        System.out.println("Token rebut al controller: " + token);
 
         initListeners();
         carregarClinicas();
@@ -44,7 +44,7 @@ public class ClinicaController {
             }
 
             Clinica clinica = screen.crearClinicaDesdeFormulario();
-            clinica.setIdClinica(0L); // o null si ho permet
+            clinica.setIdClinica(0L);
 
             service.agregarClinica(clinica, token, new Callback<Void>() {
                 @Override
@@ -72,11 +72,11 @@ public class ClinicaController {
 
 
     public void carregarClinicas() {
-        System.out.println("Executant carregarClinicas()...");
+
         service.carregarClinicas(token, new Callback<List<Clinica>>() {
             @Override
             public void onResponse(Call<List<Clinica>> call, Response<List<Clinica>> response) {
-                System.out.println("Resposta rebuda del servidor!");
+
                 if (response.isSuccessful() && response.body() != null) {
                     llistaClinicas = response.body();
                     llistaClinicas.sort((c1, c2) -> Long.compare(c1.getIdClinica(), c2.getIdClinica()));
@@ -97,7 +97,7 @@ public class ClinicaController {
                     }
 
                 } else {
-                    System.err.println("Resposta amb error: " + response.code());
+
                     JOptionPane.showMessageDialog(screen, "Error carregant les clíniques: " + response.code());
                 }
             }
@@ -136,6 +136,8 @@ public class ClinicaController {
                     JOptionPane.showMessageDialog(screen, "Clínica eliminada correctament.");
                     screen.getClinicaTable().clearSelection();
                     screen.clearForm();
+                    screen.setIdClinicaSeleccionada(null);
+
                     carregarClinicas();
                 } else {
                     JOptionPane.showMessageDialog(screen, "Error eliminant clínica. Codi: " + response.code(), "Error", JOptionPane.ERROR_MESSAGE);

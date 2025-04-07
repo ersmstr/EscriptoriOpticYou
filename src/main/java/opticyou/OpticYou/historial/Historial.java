@@ -1,4 +1,6 @@
 package opticyou.OpticYou.historial;
+import com.google.gson.annotations.SerializedName;
+
 import java.time.LocalDateTime;
 /**
  * Autor: mrami
@@ -7,15 +9,15 @@ import java.time.LocalDateTime;
 
 public class Historial {
     private Long idhistorial;
-    private String data_creacio;
+
     private String patologies;
 
     public Historial() {
     }
 
-    public Historial(Long idhistorial, String data_creacio, String patologies) {
+    public Historial(Long idhistorial, LocalDateTime data_creacio, String patologies) {
         this.idhistorial = idhistorial;
-        this.data_creacio = data_creacio;
+
         this.patologies = patologies;
     }
 
@@ -27,13 +29,8 @@ public class Historial {
         this.idhistorial = idhistorial;
     }
 
-    public String getData_creacio() {
-        return data_creacio;
-    }
 
-    public void setData_creacio(String data_creacio) {
-        this.data_creacio = data_creacio;
-    }
+
 
     public String getPatologies() {
         return patologies;
@@ -43,13 +40,6 @@ public class Historial {
         this.patologies = patologies;
     }
 
-    @Override
-    public String toString() {
-        return "Historial{" +
-                "idhistorial=" + idhistorial +
-                ", data_creacio='" + data_creacio + '\'' +
-                ", patologies='" + patologies + '\'' +
-                '}';
-    }
+
 }
 

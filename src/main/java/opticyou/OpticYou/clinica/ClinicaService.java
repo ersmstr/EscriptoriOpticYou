@@ -8,51 +8,50 @@ import retrofit2.Response;
 import java.util.List;
 
 public class ClinicaService {
+    private final ClinicaApiProvider apiProvider;
 
-    public void carregarClinicas(String token, Callback<List<Clinica>> callback) {
-        ClinicaApi clinicaApi = RetrofitApp.getClinicaApi(token);
+
+    // Constructor per defecte (per compatibilitat amb el codi existent)
+    public ClinicaService() {
+        this(RetrofitApp::getClinicaApi);
+    }
+
+    public void carregarClinicas(String token, retrofit2.Callback<List<Clinica>> callback) {
+        ClinicaApi clinicaApi = apiProvider.getClinicaApi(token);
         clinicaApi.getAllClinicas(token).enqueue(callback);
     }
 
     public void agregarClinica(Clinica clinica, String token) {
-        ClinicaApi clinicaApi = RetrofitApp.getClinicaApi(token);
-
-        clinicaApi.createClinica("Bearer " + token, clinica).enqueue(new Callback<Void>() {
+        ClinicaApi clinicaApi = apiProvider.getClinicaApi(token);
+        clinicaApi.createClinica("Bearer " + token, clinica).enqueue(new retrofit2.Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    System.out.println("Clínica creada correctament!");
-                } else {
-                    System.out.println(" Error al crear clínica. Codi: " + response.code());
-                    try {
-                        System.out.println("Cos de l'error: " + response.errorBody().string());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> response) {
+                // gestionar resposta
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                System.err.println("Error de connexió: " + t.getMessage());
+            public void onFailure(retrofit2.Call<Void> call, Throwable t) {
+                // gestionar error
             }
         });
     }
-    public void eliminarClinica(Long id, String token, Callback<Void> callback) {
-        ClinicaApi api = RetrofitApp.getClinicaApi(token);
+
+    public void eliminarClinica(Long id, String token, retrofit2.Callback<Void> callback) {
+        ClinicaApi api = apiProvider.getClinicaApi(token);
         api.deleteClinica(id, token).enqueue(callback);
     }
-    public void actualitzarClinica(Clinica clinica, String token, Callback<Void> callback) {
-        ClinicaApi api = RetrofitApp.getClinicaApi(token);
+
+    public void actualitzarClinica(Clinica clinica, String token, retrofit2.Callback<Void> callback) {
+        ClinicaApi api = apiProvider.getClinicaApi(token);
         api.updateClinica(clinica).enqueue(callback);
     }
-    public void agregarClinica(Clinica clinica, String token, Callback<Void> callback) {
-        ClinicaApi api = RetrofitApp.getClinicaApi(token);
+
+    public void agregarClinica(Clinica clinica, String token, retrofit2.Callback<Void> callback) {
+        ClinicaApi api = apiProvider.getClinicaApi(token);
         api.createClinica("Bearer " + token, clinica).enqueue(callback);
-
     }
-
-
-
+    public ClinicaService(ClinicaApiProvider apiProvider) {
+        this.apiProvider = apiProvider;
+    }
 
 }

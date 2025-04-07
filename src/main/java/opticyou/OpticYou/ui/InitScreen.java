@@ -38,7 +38,7 @@ public class InitScreen {
         loginPanel.getLoginButton().addActionListener(e -> {
             String email = loginPanel.getEmail();
             String password = loginPanel.getPassword();
-            System.out.println("⚠️ Event del botó logout executat");
+
 
 
             AuthServiceClient authServiceClient = new AuthServiceClient();
@@ -48,20 +48,20 @@ public class InitScreen {
                     if (response.isSuccessful() && response.body() != null) {
                         LoginResponseDTO loginResponse = response.body();
                         if (loginResponse.isSuccess()) {
-                            System.out.println("LOGIN " + loginResponse.getToken());
+
 
                             frame.dispose();
 
 
                             // obrir pantalla segon el rol
-                            System.out.println("ROL OBTINGUT: " + loginResponse.getRol());
+
                             if ("TREBALLADOR".equalsIgnoreCase(loginResponse.getRol())) {
 
                                 new TreballadorScreen(loginResponse.getToken());
                             } else if ("ADMIN".equalsIgnoreCase(loginResponse.getRol())) {
 
                                 new AdminPanelScreen(loginResponse.getToken());
-                                System.out.println("🧭 Obrint AdminPanel...");
+
 
                             }
 

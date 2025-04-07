@@ -3,17 +3,15 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 /**
  * Autor: mrami
  */
     public class HistorialCrudScreen extends JPanel {
         private JTextArea txtPatologies;
-        private JLabel lblDataCreacio;
         private JTable historialTable;
 
-        private JButton btnAfegir;
         private JButton btnActualitzar;
-        private JButton btnEliminar;
         private JButton btnTornar;
 
         private Long idHistorialSeleccionat;
@@ -34,14 +32,6 @@ import java.awt.event.ActionListener;
 
             int row = 0;
 
-            // Etiqueta per data de creació (només lectura)
-            JLabel lblData = new JLabel("Data Creació:");
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(lblData, gbc);
-            lblDataCreacio = new JLabel("-");
-            gbc.gridx = 1;
-            leftPanel.add(lblDataCreacio, gbc); row++;
-
             // Àrea de text per patologies
             JLabel lblPatologies = new JLabel("Patologies:");
             gbc.gridx = 0; gbc.gridy = row;
@@ -58,14 +48,13 @@ import java.awt.event.ActionListener;
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             buttonPanel.setBackground(new Color(173, 216, 230));
 
-            btnAfegir = new JButton("Afegir Historial");
+
             btnActualitzar = new JButton("Actualitzar Historial");
-            btnEliminar = new JButton("Eliminar Historial");
+
             btnTornar = new JButton("Tornar");
 
-            buttonPanel.add(btnAfegir);
+
             buttonPanel.add(btnActualitzar);
-            buttonPanel.add(btnEliminar);
 
             gbc.gridx = 0; gbc.gridy = row++;
             gbc.gridwidth = 2;
@@ -77,7 +66,7 @@ import java.awt.event.ActionListener;
             // Panell dret (taula)
             historialTable = new JTable(new DefaultTableModel(
                     new Object[][]{},
-                    new String[]{"ID", "Data", "Patologies"}
+                    new String[]{"ID", "Patologies"}
             ));
 
             historialTable.getSelectionModel().addListSelectionListener(e -> {
@@ -87,7 +76,7 @@ import java.awt.event.ActionListener;
                         Historial h = controller.getHistorialPerFila(fila);
                         if (h != null) {
                             idHistorialSeleccionat = h.getIdhistorial();
-                            lblDataCreacio.setText(String.valueOf(h.getData_creacio()));
+
                             txtPatologies.setText(h.getPatologies());
                             System.out.println("✅ Historial carregat - ID: " + idHistorialSeleccionat);
                         }
@@ -121,17 +110,13 @@ import java.awt.event.ActionListener;
             return historialTable;
         }
 
-        public void setAfegirListener(ActionListener l) {
-            btnAfegir.addActionListener(l);
-        }
+
 
         public void setActualitzarListener(ActionListener l) {
             btnActualitzar.addActionListener(l);
         }
 
-        public void setEliminarListener(ActionListener l) {
-            btnEliminar.addActionListener(l);
-        }
+
 
         public void setTornarListener(ActionListener l) {
             btnTornar.addActionListener(l);
@@ -143,7 +128,7 @@ import java.awt.event.ActionListener;
 
         public void clearForm() {
             idHistorialSeleccionat = null;
-            lblDataCreacio.setText("-");
+
             txtPatologies.setText("");
             historialTable.clearSelection();
         }
@@ -164,10 +149,13 @@ import java.awt.event.ActionListener;
             DefaultTableModel model = (DefaultTableModel) historialTable.getModel();
             model.setRowCount(0);
 
+
+
             for (Historial h : historials) {
+
                 model.addRow(new Object[]{
                         h.getIdhistorial(),
-                        h.getData_creacio(),
+
                         h.getPatologies()
                 });
             }

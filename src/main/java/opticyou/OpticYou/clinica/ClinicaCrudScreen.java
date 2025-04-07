@@ -177,7 +177,7 @@ public class ClinicaCrudScreen extends JPanel {
                                 txtEmail.setText(seleccionada.getEmail());
 
                                 idClinicaSeleccionada = seleccionada.getIdClinica(); // Desa l’ID per futurs updates
-                                System.out.println("✅ Clínica carregada - ID: " + idClinicaSeleccionada);
+
                             }
                         }
                     }
@@ -275,8 +275,7 @@ public class ClinicaCrudScreen extends JPanel {
         this(); // Crida al constructor per defecte que ja tens
         this.token = token;
 
-        System.out.println("Inicialitzant CRUD amb token: " + token);
-        //new ClinicaController(this, token); // Ara sí!
+
     }
     private Long idClinicaSeleccionada;
     public Long getIdClinicaSeleccionada() {
@@ -298,6 +297,13 @@ public class ClinicaCrudScreen extends JPanel {
         idClinicaSeleccionada = null;
         clinicaTable.clearSelection(); // neteja també la selecció
     }
+
+
+
+   public void setIdClinicaSeleccionada(Long idClinicaSeleccionada) {
+        this.idClinicaSeleccionada = idClinicaSeleccionada;
+    }
+
 
 
 

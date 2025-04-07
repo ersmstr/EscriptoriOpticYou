@@ -13,16 +13,16 @@ public interface ClinicaApi {
         Call<Void> createClinica(@Header("Authorization") String token, @Body Clinica clinica);
 
 
-        // Obtener una clínica por ID
+        // Obtener una clínica per ID
         @GET("/clinica/{id}/{token}")
         Call<Clinica> getClinicaById(@Path("id") Long id, @Path("token") String token);
 
-        // Obtener todas las clínicas
+        // Totes les clíniques
         @GET("/clinica")
         Call<List<Clinica>> getAllClinicas(@Header("Authorization") String token);
 
 
-        // Actualizar una clínica
+        // Actualitzar una clínica
         @PUT("/clinica/update")
         Call<Void> updateClinica(@Body Clinica clinica);
 

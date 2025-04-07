@@ -31,12 +31,12 @@ public class AdminPanelScreen {
 
         Color backgroundColor = new Color(173, 216, 230);
 
-        // 🔹 HEADER amb el logo
+        // HEADER amb el logo
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(backgroundColor);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // 🔹 Logo a la dreta (amb redimensionament)
+        // Logo a la dreta (amb redimensionament)
         URL logoUrl = getClass().getResource("/recursos/Logo.jpg");
         if (logoUrl != null) {
             ImageIcon originalIcon = new ImageIcon(logoUrl);
@@ -45,14 +45,14 @@ public class AdminPanelScreen {
             JLabel logoLabel = new JLabel(scaledIcon);
             headerPanel.add(logoLabel, BorderLayout.WEST);
         } else {
-            System.out.println("⚠️ No s'ha trobat la imatge del logo.");
+
             JLabel placeholder = new JLabel("[Logo]");
             headerPanel.add(placeholder, BorderLayout.WEST);
         }
 
         frame.add(headerPanel, BorderLayout.NORTH);
 
-        // 🔹 Crear panell per al menú de botons
+        // Crear panell per al menú de botons
         menuPanel = new JPanel(new GridLayout(6, 1, 10, 10));
         menuPanel.setBackground(backgroundColor);
 
@@ -69,12 +69,12 @@ public class AdminPanelScreen {
         menuPanel.add(Box.createVerticalGlue());
         menuPanel.add(wrapButton(logoutButton));
 
-        // 🔹 Títol damunt dels botons
+        // Títol damunt dels botons
         JLabel titleLabel = new JLabel("Panell d'Administrador", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
-        // 🔹 Panel contenidor del títol + menú
+        //  Panel contenidor del títol + menú
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(backgroundColor);
         contentPanel.add(titleLabel, BorderLayout.NORTH);
@@ -82,7 +82,7 @@ public class AdminPanelScreen {
 
         frame.add(contentPanel, BorderLayout.CENTER);
 
-        // 🔹 Accions dels botons
+        //  Accions dels botons
 
         btnTreballadors.addActionListener(e -> JOptionPane.showMessageDialog(frame, "Gestió de Treballadors"));
         btnHistorials.addActionListener(e ->{
@@ -155,7 +155,7 @@ public class AdminPanelScreen {
             );
 
             if (confirm == JOptionPane.YES_OPTION) {
-                System.out.println("Logout confirmat.");
+
                 LogoutService logoutService = new LogoutService();
                 logoutService.logout(token);
                 frame.dispose();
@@ -167,7 +167,7 @@ public class AdminPanelScreen {
         frame.setVisible(true);
     }
 
-    // 🔸 Botó amb estil
+    //  Botó amb estil
     private JButton createStyledButton(String text) {
         JButton button = new JButton(text);
         button.setFont(new Font("Arial", Font.BOLD, 14));
@@ -179,7 +179,7 @@ public class AdminPanelScreen {
         return button;
     }
 
-    // 🔸 Envolta un botó amb panell centrat
+    //  Envolta un botó amb panell centrat
     private JPanel wrapButton(JButton button) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.setOpaque(false);
