@@ -3,7 +3,9 @@ package ProvesUnitaries;
 /**
  * Autor: mrami
  */
-import opticyou.OpticYou.clients.*;
+import opticyou.OpticYou.rolAdmin.clients.Client;
+import opticyou.OpticYou.rolAdmin.clients.ClientApi;
+import opticyou.OpticYou.rolAdmin.clients.ClientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

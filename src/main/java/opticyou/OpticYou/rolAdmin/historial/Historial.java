@@ -1,4 +1,4 @@
-package opticyou.OpticYou.historial;
+package opticyou.OpticYou.rolAdmin.historial;
 
 /**
  * Autor: mramis

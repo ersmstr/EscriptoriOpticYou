@@ -1,4 +1,4 @@
-package opticyou.OpticYou.clinica;
+package opticyou.OpticYou.rolAdmin.clinica;
 
 import opticyou.OpticYou.service.auth.RetrofitApp;
 import retrofit2.Callback;

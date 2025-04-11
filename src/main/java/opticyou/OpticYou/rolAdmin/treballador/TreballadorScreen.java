@@ -1,4 +1,4 @@
-package opticyou.OpticYou.treballador;
+package opticyou.OpticYou.rolAdmin.treballador;
 /**
  * Autor: mrami
  */

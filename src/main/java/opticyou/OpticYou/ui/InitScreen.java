@@ -5,7 +5,7 @@ package opticyou.OpticYou.ui;
 import opticyou.OpticYou.service.auth.AuthServiceClient;
 import opticyou.OpticYou.dto.LoginResponseDTO;
 import opticyou.OpticYou.ui.admin.AdminPanelScreen;
-import opticyou.OpticYou.treballador.TreballadorScreen;
+import opticyou.OpticYou.rolAdmin.treballador.TreballadorScreen;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

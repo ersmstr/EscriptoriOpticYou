@@ -4,8 +4,8 @@ package OpticYou.service.ProvesIntegracio;
 
 import opticyou.OpticYou.dto.LoginRequestDTO;
 import opticyou.OpticYou.dto.LoginResponseDTO;
-import opticyou.OpticYou.historial.Historial;
-import opticyou.OpticYou.historial.HistorialService;
+import opticyou.OpticYou.rolAdmin.historial.Historial;
+import opticyou.OpticYou.rolAdmin.historial.HistorialService;
 import opticyou.OpticYou.service.auth.AuthServiceClient;
 import org.junit.jupiter.api.Test;
 import retrofit2.Call;

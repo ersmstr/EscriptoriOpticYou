@@ -1,6 +1,9 @@
 package ProvesUnitaries;
 
-import opticyou.OpticYou.clinica.*;
+import opticyou.OpticYou.rolAdmin.clinica.Clinica;
+import opticyou.OpticYou.rolAdmin.clinica.ClinicaApi;
+import opticyou.OpticYou.rolAdmin.clinica.ClinicaApiProvider;
+import opticyou.OpticYou.rolAdmin.clinica.ClinicaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

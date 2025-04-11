@@ -1,4 +1,4 @@
-package opticyou.OpticYou.clients;
+package opticyou.OpticYou.rolAdmin.clients;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

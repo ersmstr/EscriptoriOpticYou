@@ -1,6 +1,8 @@
 package ProvesUnitaries;
 
-import opticyou.OpticYou.historial.*;
+import opticyou.OpticYou.rolAdmin.historial.Historial;
+import opticyou.OpticYou.rolAdmin.historial.HistorialApi;
+import opticyou.OpticYou.rolAdmin.historial.HistorialService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

@@ -1,14 +1,14 @@
 package opticyou.OpticYou.ui.admin;
 
 
-import opticyou.OpticYou.clinica.ClinicaController;
+import opticyou.OpticYou.rolAdmin.clinica.ClinicaController;
 import opticyou.OpticYou.service.auth.LogoutService;
 import opticyou.OpticYou.ui.InitScreen;
-import opticyou.OpticYou.clinica.ClinicaCrudScreen;
-import opticyou.OpticYou.clients.ClientCrudScreen;
-import opticyou.OpticYou.clients.ClientController;
-import opticyou.OpticYou.historial.HistorialCrudScreen;
-import opticyou.OpticYou.historial.HistorialController;
+import opticyou.OpticYou.rolAdmin.clinica.ClinicaCrudScreen;
+import opticyou.OpticYou.rolAdmin.clients.ClientCrudScreen;
+import opticyou.OpticYou.rolAdmin.clients.ClientController;
+import opticyou.OpticYou.rolAdmin.historial.HistorialCrudScreen;
+import opticyou.OpticYou.rolAdmin.historial.HistorialController;
 
 import javax.swing.*;
 import java.awt.*;

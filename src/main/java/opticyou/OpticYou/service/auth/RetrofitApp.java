@@ -6,10 +6,10 @@ package opticyou.OpticYou.service.auth;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import opticyou.OpticYou.clients.ClientApi;
-import opticyou.OpticYou.clinica.ClinicaApi;
-import opticyou.OpticYou.clinica.ClinicaApiProvider;
-import opticyou.OpticYou.historial.HistorialApi;
+import opticyou.OpticYou.rolAdmin.clients.ClientApi;
+import opticyou.OpticYou.rolAdmin.clinica.ClinicaApi;
+import opticyou.OpticYou.rolAdmin.clinica.ClinicaApiProvider;
+import opticyou.OpticYou.rolAdmin.historial.HistorialApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

@@ -1,9 +1,7 @@
-package opticyou.OpticYou.clients;
+package opticyou.OpticYou.rolAdmin.clients;
 
 import opticyou.OpticYou.service.auth.RetrofitApp;
-import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.util.List;
 

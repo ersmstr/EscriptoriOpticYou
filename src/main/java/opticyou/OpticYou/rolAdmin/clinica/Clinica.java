@@ -1,4 +1,4 @@
-package opticyou.OpticYou.clinica;
+package opticyou.OpticYou.rolAdmin.clinica;
 
 /**
  * Representa una clínica dins del sistema.
