@@ -1,5 +1,7 @@
-package opticyou.OpticYou.rolAdmin.historial;
+package opticyou.OpticYou.service;
 
+import opticyou.OpticYou.model.Historial;
+import opticyou.OpticYou.data.HistorialApi;
 import opticyou.OpticYou.service.auth.RetrofitApp;
 import retrofit2.Callback;
 import java.util.List;

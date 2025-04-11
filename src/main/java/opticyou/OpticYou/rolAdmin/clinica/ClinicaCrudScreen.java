@@ -1,5 +1,7 @@
 package opticyou.OpticYou.rolAdmin.clinica;
 
+import opticyou.OpticYou.model.Clinica;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;

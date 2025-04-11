@@ -1,7 +1,7 @@
 package OpticYou.service.ProvesIntegracio;
 
-import opticyou.OpticYou.rolAdmin.clients.Client;
-import opticyou.OpticYou.rolAdmin.clients.ClientService;
+import opticyou.OpticYou.model.Client;
+import opticyou.OpticYou.service.ClientService;
 import opticyou.OpticYou.dto.LoginRequestDTO;
 import opticyou.OpticYou.dto.LoginResponseDTO;
 import opticyou.OpticYou.service.auth.AuthServiceClient;

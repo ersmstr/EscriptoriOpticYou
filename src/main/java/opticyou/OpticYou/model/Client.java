@@ -1,4 +1,4 @@
-package opticyou.OpticYou.rolAdmin.clients;
+package opticyou.OpticYou.model;
 
 import com.google.gson.annotations.SerializedName;
 

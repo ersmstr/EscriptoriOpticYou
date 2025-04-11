@@ -1,7 +1,7 @@
 package OpticYou.service.ProvesIntegracio;
 
-import opticyou.OpticYou.rolAdmin.clinica.Clinica;
-import opticyou.OpticYou.rolAdmin.clinica.ClinicaService;
+import opticyou.OpticYou.model.Clinica;
+import opticyou.OpticYou.service.ClinicaService;
 import opticyou.OpticYou.dto.LoginRequestDTO;
 import opticyou.OpticYou.dto.LoginResponseDTO;
 import opticyou.OpticYou.service.auth.AuthServiceClient;

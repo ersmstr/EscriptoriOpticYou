@@ -1,5 +1,7 @@
 package opticyou.OpticYou.rolAdmin.historial;
 
+import opticyou.OpticYou.model.Historial;
+import opticyou.OpticYou.service.HistorialService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

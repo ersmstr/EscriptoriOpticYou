@@ -1,5 +1,8 @@
-package opticyou.OpticYou.rolAdmin.clinica;
+package opticyou.OpticYou.service;
 
+import opticyou.OpticYou.model.Clinica;
+import opticyou.OpticYou.data.ClinicaApi;
+import opticyou.OpticYou.data.ClinicaApiProvider;
 import opticyou.OpticYou.service.auth.RetrofitApp;
 import retrofit2.Callback;
 import java.util.List;

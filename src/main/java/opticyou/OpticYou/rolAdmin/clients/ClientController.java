@@ -1,5 +1,7 @@
 package opticyou.OpticYou.rolAdmin.clients;
 
+import opticyou.OpticYou.model.Client;
+import opticyou.OpticYou.service.ClientService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

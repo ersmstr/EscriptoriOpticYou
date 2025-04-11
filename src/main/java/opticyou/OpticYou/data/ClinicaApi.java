@@ -1,5 +1,6 @@
-package opticyou.OpticYou.rolAdmin.clinica;
+package opticyou.OpticYou.data;
 
+import opticyou.OpticYou.model.Clinica;
 import retrofit2.Call;
 import retrofit2.http.*;
 

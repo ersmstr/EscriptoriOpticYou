@@ -1,5 +1,6 @@
-package opticyou.OpticYou.rolAdmin.historial;
+package opticyou.OpticYou.data;
 
+import opticyou.OpticYou.model.Historial;
 import retrofit2.Call;
 import retrofit2.http.*;
 

@@ -1,4 +1,4 @@
-package opticyou.OpticYou.rolAdmin.clinica;
+package opticyou.OpticYou.data;
 
 @FunctionalInterface
 public interface ClinicaApiProvider {

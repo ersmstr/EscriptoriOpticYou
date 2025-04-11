@@ -1,5 +1,6 @@
-package opticyou.OpticYou.rolAdmin.clients;
+package opticyou.OpticYou.data;
 
+import opticyou.OpticYou.model.Client;
 import retrofit2.Call;
 import retrofit2.http.*;
 import java.util.List;

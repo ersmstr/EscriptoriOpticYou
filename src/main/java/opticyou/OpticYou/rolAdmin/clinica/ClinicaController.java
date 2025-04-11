@@ -1,5 +1,7 @@
 package opticyou.OpticYou.rolAdmin.clinica;
 
+import opticyou.OpticYou.model.Clinica;
+import opticyou.OpticYou.service.ClinicaService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
