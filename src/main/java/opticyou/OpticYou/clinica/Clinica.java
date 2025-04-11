@@ -1,19 +1,46 @@
 package opticyou.OpticYou.clinica;
 
 /**
- * Autor: mrami
+ * Representa una clínica dins del sistema.
+ * <p>
+ * Inclou informació general com el nom, adreça, telèfon, horaris i email.
+ */
+/**
+ * Autor: mramis
  */
 public class Clinica {
+
+    /** Nom de la clínica. */
     private String nom;
+
+    /** Adreça física de la clínica. */
     private String direccio;
+
+    /** Número de telèfon de la clínica. */
     private String telefon;
+
+    /** Hora d'obertura de la clínica (ex: 08:00). */
     private String horari_opertura;
+
+    /** Hora de tancament de la clínica (ex: 18:00). */
     private String horari_tancament;
+
+    /** Correu electrònic de la clínica. */
     private String email;
+
+    /** Identificador únic de la clínica. */
     private Long idClinica;
 
-
-    //constructor
+    /**
+     * Constructor principal de la classe {@code Clinica}.
+     *
+     * @param nom              Nom de la clínica.
+     * @param direccio         Adreça de la clínica.
+     * @param telefon          Telèfon de contacte.
+     * @param horari_opertura  Hora d'obertura.
+     * @param horari_tancament Hora de tancament.
+     * @param email            Correu electrònic.
+     */
     public Clinica(String nom, String direccio, String telefon, String horari_opertura, String horari_tancament, String email) {
         this.nom = nom;
         this.direccio = direccio;
@@ -23,13 +50,21 @@ public class Clinica {
         this.email = email;
     }
 
-  public Long getIdClinica() {
+    /**
+     * Retorna l'ID de la clínica.
+     * @return ID únic de la clínica.
+     */
+    public Long getIdClinica() {
         return idClinica;
-  }
-  public void setIdClinica(Long idClinica) {
-        this.idClinica = idClinica;
-  }
+    }
 
+    /**
+     * Estableix l'ID de la clínica.
+     * @param idClinica Nou ID.
+     */
+    public void setIdClinica(Long idClinica) {
+        this.idClinica = idClinica;
+    }
 
     public String getNom() {
         return nom;

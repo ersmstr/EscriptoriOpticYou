@@ -7,50 +7,56 @@ import retrofit2.Response;
 
 import java.util.List;
 
+/**
+ * Servei que encapsula les crides a l'API de clients {@link ClientApi}.
+ * Proporciona mètodes per carregar, crear, actualitzar i eliminar clients.
+ */
 public class ClientService {
 
+    /**
+     * Carrega la llista de clients del servidor.
+     *
+     * @param token    Token JWT d'autenticació.
+     * @param callback Callback Retrofit per manejar la resposta amb la llista de {@link Client}.
+     */
     public void carregarClients(String token, Callback<List<Client>> callback) {
         ClientApi clientApi = RetrofitApp.getClientApi(token);
         clientApi.getAllClients(token).enqueue(callback);
     }
 
-    public void createClient(Client client, String token) {
-        ClientApi clientApi = RetrofitApp.getClientApi(token);
-
-        clientApi.createClient(client, "Bearer " + token).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    System.out.println("Client creat correctament!");
-                } else {
-                    System.out.println(" Error al crear client. Codi: " + response.code());
-                    try {
-                        System.out.println("Cos de l'error: " + response.errorBody().string());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                System.err.println("Error de connexió: " + t.getMessage());
-            }
-        });
-    }
-
-    public void eliminarClient(Long id, String token, Callback<Void> callback) {
-        ClientApi clientApi = RetrofitApp.getClientApi(token);
-        clientApi.deleteClient(id, token).enqueue(callback);
-    }
-
-    public void actualitzarClient(Client client, String token, Callback<Void> callback) {
-        ClientApi clientApi = RetrofitApp.getClientApi(token);
-        clientApi.updateClient(client, "Bearer " + token).enqueue(callback);
-    }
+    /**
+     * Crea un client nou i delega la gestió de la resposta a través d’un {@link Callback}.
+     *
+     * @param client   Objecte {@link Client} a crear.
+     * @param token    Token JWT d'autenticació.
+     * @param callback Callback Retrofit per manejar la resposta.
+     */
     public void createClient(Client client, String token, Callback<Void> callback) {
         ClientApi clientApi = RetrofitApp.getClientApi(token);
         clientApi.createClient(client, "Bearer " + token).enqueue(callback);
     }
 
+    /**
+     * Elimina un client pel seu ID.
+     *
+     * @param id       Identificador del client a eliminar.
+     * @param token    Token JWT d'autenticació.
+     * @param callback Callback Retrofit per manejar la resposta.
+     */
+    public void eliminarClient(Long id, String token, Callback<Void> callback) {
+        ClientApi clientApi = RetrofitApp.getClientApi(token);
+        clientApi.deleteClient(id, token).enqueue(callback);
+    }
+
+    /**
+     * Actualitza les dades d’un client.
+     *
+     * @param client   Client amb les dades actualitzades.
+     * @param token    Token JWT d'autenticació.
+     * @param callback Callback Retrofit per manejar la resposta.
+     */
+    public void actualitzarClient(Client client, String token, Callback<Void> callback) {
+        ClientApi clientApi = RetrofitApp.getClientApi(token);
+        clientApi.updateClient(client, "Bearer " + token).enqueue(callback);
+    }
 }

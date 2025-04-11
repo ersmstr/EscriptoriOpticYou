@@ -7,7 +7,14 @@ import retrofit2.Response;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+/**
+ * autor mramis
+ */
 
+/**
+ * Controlador per gestionar les operacions relacionades amb historials mèdics.
+ * Permet carregar i actualitzar historials mitjançant la interfície gràfica i serveis REST.
+ */
 public class HistorialController {
 
     private HistorialCrudScreen screen;
@@ -15,6 +22,12 @@ public class HistorialController {
     private String token;
     private List<Historial> llistaHistorials;
 
+    /**
+     * Constructor del controlador d'historials.
+     *
+     * @param screen Pantalla de CRUD d'historials.
+     * @param token  Token d'autenticació per fer les peticions.
+     */
     public HistorialController(HistorialCrudScreen screen, String token) {
         this.screen = screen;
         this.token = token;
@@ -24,12 +37,20 @@ public class HistorialController {
         carregarHistorials();
     }
 
+    /**
+     * Inicialitza els listeners de la UI.
+     * Assigna funcionalitat al botó d'actualitzar historial.
+     */
     private void initListeners() {
         screen.setActualitzarListener(e -> actualitzarHistorialSeleccionat());
     }
 
+    /**
+     * Carrega la llista d'historials des del servei i omple la taula de la UI.
+     * Ordena els historials per ID.
+     */
     public void carregarHistorials() {
-            service.carregarHistorials(token, new Callback<List<Historial>>() {
+        service.carregarHistorials(token, new Callback<List<Historial>>() {
             @Override
             public void onResponse(Call<List<Historial>> call, Response<List<Historial>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -44,9 +65,7 @@ public class HistorialController {
                                 h.getIdhistorial(),
                                 h.getPatologies()
                         });
-
                     }
-
                 } else {
                     JOptionPane.showMessageDialog(screen, "Error carregant historials: " + response.code());
                 }
@@ -59,6 +78,10 @@ public class HistorialController {
         });
     }
 
+    /**
+     * Actualitza l'historial seleccionat amb les dades del formulari.
+     * Mostra missatges d'estat segons el resultat de l'operació.
+     */
     private void actualitzarHistorialSeleccionat() {
         Long id = screen.getIdHistorialSeleccionat();
 
@@ -89,6 +112,12 @@ public class HistorialController {
         });
     }
 
+    /**
+     * Retorna l'historial que correspon a una fila seleccionada de la taula.
+     *
+     * @param fila Índex de la fila seleccionada.
+     * @return L'objecte {@link Historial} o null si no hi ha cap historial vàlid en aquella fila.
+     */
     public Historial getHistorialPerFila(int fila) {
         if (llistaHistorials != null && fila >= 0 && fila < llistaHistorials.size()) {
             return llistaHistorials.get(fila);

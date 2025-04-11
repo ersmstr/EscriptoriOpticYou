@@ -4,9 +4,21 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 
+/**
+ * Pantalla de CRUD per a la gestió de clients.
+ * <p>
+ * Permet crear, modificar, eliminar i consultar clients, així com visualitzar-los en una taula.
+ * Aquesta classe és una vista (Swing) que es connecta amb {@link ClientController}.
+ */
+
+/**
+ * autor mramis
+ */
 public class ClientCrudScreen extends JPanel {
 
+    // Camps de formulari
     private JTextField txtDataNaixament;
     private JTextField txtSexe;
     private JTextField txtTelefon;
@@ -16,18 +28,25 @@ public class ClientCrudScreen extends JPanel {
     private JTextField txtNom;
     private JTextField txtContrasenya;
 
+    // Botons i taula
     private JButton btnAfegir, btnActualitzar, btnEliminar, btnTornar;
     private JTable clientTable;
+
+    // Camps d'estat
     private Long idClientSeleccionat;
     private ClientController controller;
-    private Long historialIdSeleccionat; // Nou camp per conservar l'historial
+    private Long historialIdSeleccionat;
 
-
+    /**
+     * Constructor que crea i inicialitza la pantalla CRUD de clients.
+     *
+     * @param token Token d'autenticació (actualment no utilitzat directament en aquesta classe).
+     */
     public ClientCrudScreen(String token) {
         setLayout(new BorderLayout());
         setBackground(new Color(173, 216, 230));
 
-        // Panell esquerre
+        // Panell de formulari (esquerra)
         JPanel leftPanel = new JPanel(new GridBagLayout());
         leftPanel.setBackground(new Color(173, 216, 230));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -36,64 +55,54 @@ public class ClientCrudScreen extends JPanel {
 
         int row = 0;
 
-
-        // Nom
+        // Camps del formulari
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("Nom:"), gbc);
         txtNom = new JTextField(20);
         gbc.gridx = 1;
         leftPanel.add(txtNom, gbc); row++;
 
-        // Contrasenya
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("Contrasenya:"), gbc);
         txtContrasenya = new JTextField(20);
         gbc.gridx = 1;
         leftPanel.add(txtContrasenya, gbc); row++;
 
-        // Email
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("Email:"), gbc);
         txtEmail = new JTextField(20);
         gbc.gridx = 1;
         leftPanel.add(txtEmail, gbc); row++;
 
-        // Rol
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("Rol:"), gbc);
         comboRol = new JComboBox<>(new String[]{"CLIENT", "TREBALLADOR", "ADMIN"});
         gbc.gridx = 1;
         leftPanel.add(comboRol, gbc); row++;
 
-
-        // Data naixement
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("Data Naixement:"), gbc);
         txtDataNaixament = new JTextField(20);
         gbc.gridx = 1;
         leftPanel.add(txtDataNaixament, gbc); row++;
 
-        // Sexe
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("Sexe:"), gbc);
         txtSexe = new JTextField(20);
         gbc.gridx = 1;
         leftPanel.add(txtSexe, gbc); row++;
 
-        // Telèfon
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("Telèfon:"), gbc);
         txtTelefon = new JTextField(20);
         gbc.gridx = 1;
         leftPanel.add(txtTelefon, gbc); row++;
 
-        // Clínica ID
         gbc.gridx = 0; gbc.gridy = row;
         leftPanel.add(new JLabel("ID Clínica:"), gbc);
         txtClinicaId = new JTextField(20);
         gbc.gridx = 1;
         leftPanel.add(txtClinicaId, gbc); row++;
-
 
         // Botons
         JPanel buttonPanel = new JPanel(new FlowLayout());
@@ -116,7 +125,7 @@ public class ClientCrudScreen extends JPanel {
 
         // Taula
         clientTable = new JTable(new DefaultTableModel(new Object[][]{}, new String[]{
-                "ID", "Naixement", "Sexe", "Telèfon", "Clínica", "Historial"
+                "ID", "Nom", "email", "Data Naixement", "Sexe", "Telèfon", "Clínica", "Historial"
         }));
 
         JScrollPane tableScroll = new JScrollPane(clientTable);
@@ -124,17 +133,18 @@ public class ClientCrudScreen extends JPanel {
 
         clientTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                int fila = clientTable.getSelectedRow();
-                if (fila >= 0 && controller != null) {
-                    Client c = controller.getClientPerFila(fila);
+                int filaVista = clientTable.getSelectedRow();
+                if (filaVista >= 0 && controller != null) {
+                    int filaModel = clientTable.convertRowIndexToModel(filaVista);
+                    Client c = controller.getClientPerFila(filaModel);
                     if (c != null) {
-
-                        //txtIdClient.setText(String.valueOf(c.getIdClient()));
+                        txtNom.setText(c.getNom());
+                        txtEmail.setText(c.getEmail());
+                        txtContrasenya.setText(c.getContrasenya());
                         txtDataNaixament.setText(c.getDataNaixament());
                         txtSexe.setText(c.getSexe());
                         txtTelefon.setText(c.getTelefon());
                         txtClinicaId.setText(c.getClinicaId() != null ? c.getClinicaId().toString() : "");
-                       // txtHistorialId.setText(String.valueOf(c.getHistorialId()));
                         idClientSeleccionat = c.getIdClient();
                         historialIdSeleccionat = c.getHistorialId();
                     }
@@ -142,6 +152,7 @@ public class ClientCrudScreen extends JPanel {
             }
         });
 
+        // Panell combinat
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(leftPanel), tableScroll);
         split.setDividerLocation(400);
         split.setResizeWeight(0.5);
@@ -150,32 +161,36 @@ public class ClientCrudScreen extends JPanel {
         setPreferredSize(new Dimension(1000, 600));
     }
 
-    // Getters per controladors
-
-    //public String getIdClient() { return txtIdClient.getText(); }
+    // Getters per a camps específics del formulari
+    public String getNom() { return txtNom.getText(); }
+    public String getContrasenya() { return txtContrasenya.getText(); }
     public String getDataNaixament() { return txtDataNaixament.getText(); }
     public String getSexe() { return txtSexe.getText(); }
     public String getTelefon() { return txtTelefon.getText(); }
     public String getClinicaId() { return txtClinicaId.getText(); }
-    //public String getHistorialId() { return txtHistorialId.getText(); }
     public String getEmail() { return txtEmail.getText(); }
     public String getRol() { return (String) comboRol.getSelectedItem(); }
 
-
     public JTable getClientTable() { return clientTable; }
 
+    // Mètodes per afegir listeners d'accions
     public void setAfegirListener(ActionListener l) { btnAfegir.addActionListener(l); }
     public void setModificarListener(ActionListener l) { btnActualitzar.addActionListener(l); }
     public void setEliminarListener(ActionListener l) { btnEliminar.addActionListener(l); }
     public void setTornarListener(ActionListener l) { btnTornar.addActionListener(l); }
 
+    /**
+     * Retorna l'ID del client seleccionat, o -1 si cap està seleccionat.
+     * @return ID del client seleccionat.
+     */
     public Long getIdClientSeleccionat() {
         return idClientSeleccionat != null ? idClientSeleccionat : -1;
     }
 
+    /**
+     * Neteja tots els camps del formulari i desselecciona qualsevol fila de la taula.
+     */
     public void clearForm() {
-
-
         txtNom.setText("");
         txtContrasenya.setText("");
         txtEmail.setText("");
@@ -188,7 +203,12 @@ public class ClientCrudScreen extends JPanel {
         clientTable.clearSelection();
     }
 
-    public void mostrarClients(java.util.List<Client> clients) {
+    /**
+     * Omple la taula amb la llista de clients proporcionada.
+     *
+     * @param clients Llista de clients per mostrar.
+     */
+    public void mostrarClients(List<Client> clients) {
         DefaultTableModel model = (DefaultTableModel) clientTable.getModel();
         model.setRowCount(0);
         for (Client c : clients) {
@@ -204,6 +224,12 @@ public class ClientCrudScreen extends JPanel {
         }
     }
 
+    /**
+     * Construeix un objecte {@link Client} a partir de les dades del formulari.
+     * Inclou l'ID del client si està en edició.
+     *
+     * @return Objecte client amb les dades del formulari.
+     */
     public Client crearClientDesdeFormulari() {
         String nom = getNom();
         String email = getEmail();
@@ -232,18 +258,12 @@ public class ClientCrudScreen extends JPanel {
         return client;
     }
 
-
-
+    /**
+     * Assigna el controlador associat a aquesta pantalla.
+     *
+     * @param controller Instància de {@link ClientController}.
+     */
     public void setController(ClientController controller) {
         this.controller = controller;
     }
-
-    public String getNom() {
-        return txtNom.getText();
-    }
-    public String getContrasenya() {
-        return txtContrasenya.getText();
-    }
-
-
 }
