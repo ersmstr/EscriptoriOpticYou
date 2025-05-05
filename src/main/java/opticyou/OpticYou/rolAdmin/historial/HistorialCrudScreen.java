@@ -1,6 +1,8 @@
 package opticyou.OpticYou.rolAdmin.historial;
 
 import opticyou.OpticYou.model.Historial;
+import opticyou.OpticYou.rolAdmin.diagnostic.DiagnosticController;
+import opticyou.OpticYou.rolAdmin.diagnostic.DiagnosticCrudScreen;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -24,9 +26,14 @@ public class HistorialCrudScreen extends JPanel {
     private JButton btnActualitzar;
     private JButton btnTornar;
 
+
+
     private Long idHistorialSeleccionat;
     private HistorialController controller;
     private String token;
+
+    private JButton btnDiagnostic;
+
 
     /**
      * Constructor que inicialitza la pantalla amb el token d'autenticació.
@@ -78,8 +85,14 @@ public class HistorialCrudScreen extends JPanel {
         // Taula de visualització
         historialTable = new JTable(new DefaultTableModel(
                 new Object[][]{},
-                new String[]{"ID", "Patologies"}
-        ));
+                new String[]{"ID", "Patologies", "Diagnòstic"}
+
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 2; // només la columna de botó és editable
+            }
+        });
 
         historialTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -106,6 +119,9 @@ public class HistorialCrudScreen extends JPanel {
         add(splitPane, BorderLayout.CENTER);
 
         setPreferredSize(new Dimension(1000, 600));
+        historialTable.getColumn("Diagnòstic").setCellRenderer(new ButtonRenderer());
+        historialTable.getColumn("Diagnòstic").setCellEditor(new ButtonEditor(new JCheckBox()));
+
     }
 
     // Getters
@@ -202,8 +218,55 @@ public class HistorialCrudScreen extends JPanel {
         for (Historial h : historials) {
             model.addRow(new Object[]{
                     h.getIdhistorial(),
-                    h.getPatologies()
+                    h.getPatologies(),
+                    "📝"
             });
         }
     }
+    class ButtonRenderer extends JButton implements javax.swing.table.TableCellRenderer {
+        public ButtonRenderer() {
+            setText("📝");
+        }
+
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus,
+                                                       int row, int column) {
+            return this;
+        }
+    }
+
+    class ButtonEditor extends DefaultCellEditor {
+        private JButton button;
+        private Long historialId;
+
+        public ButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton("📝");
+            button.setOpaque(true);
+
+            button.addActionListener(e -> {
+                if (historialId != null) {
+                    DiagnosticCrudScreen diagScreen = new DiagnosticCrudScreen(
+                            historialId,
+                            new DiagnosticController(token, SwingUtilities.getWindowAncestor(HistorialCrudScreen.this)),
+                            token
+                    );
+                    diagScreen.setVisible(true);
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                     boolean isSelected, int row, int column) {
+            historialId = (Long) table.getValueAt(row, 0);
+            return button;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return "📝";
+        }
+    }
+
 }

@@ -6,10 +6,7 @@ package opticyou.OpticYou.service.auth;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
-import opticyou.OpticYou.data.ClientApi;
-import opticyou.OpticYou.data.ClinicaApi;
-import opticyou.OpticYou.data.ClinicaApiProvider;
-import opticyou.OpticYou.data.HistorialApi;
+import opticyou.OpticYou.data.*;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -18,7 +15,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitApp {
 
-    private static final String BASE_URL = "http://host.docker.internal:8083/";
+    private static final String BASE_URL = "https://localhost:8083/";
+
+
     private static Retrofit retrofit;
 
     /**
@@ -32,6 +31,7 @@ public class RetrofitApp {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
 
             OkHttpClient client = new OkHttpClient.Builder()
+                    .hostnameVerifier((hostname, session) -> true)
                     .addInterceptor(loggingInterceptor)
                     .build();
 
@@ -52,6 +52,7 @@ public class RetrofitApp {
      */
     public static ClientApi getClientApi(String token) {
         OkHttpClient client = new OkHttpClient.Builder()
+                .hostnameVerifier((hostname, session) -> true)
                 .addInterceptor(chain -> chain.proceed(
                         chain.request().newBuilder()
                                 .header("Authorization", "Bearer " + token)
@@ -75,6 +76,7 @@ public class RetrofitApp {
      */
     public static HistorialApi getHistorialApi(String token) {
         OkHttpClient client = new OkHttpClient.Builder()
+                .hostnameVerifier((hostname, session) -> true)
                 .addInterceptor(chain -> chain.proceed(
                         chain.request().newBuilder()
                                 .header("Authorization", "Bearer " + token)
@@ -111,6 +113,7 @@ public class RetrofitApp {
      */
     private static ClinicaApi createClinicaApi(String token) {
         OkHttpClient client = new OkHttpClient.Builder()
+                .hostnameVerifier((hostname, session) -> true)
                 .addInterceptor(chain -> chain.proceed(
                         chain.request().newBuilder()
                                 .header("Authorization", "Bearer " + token)
@@ -125,4 +128,39 @@ public class RetrofitApp {
 
         return retrofitWithToken.create(ClinicaApi.class);
     }
+    public static TreballadorApi getTreballadorApi(String token) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .hostnameVerifier((hostname, session) -> true)
+                .addInterceptor(chain -> chain.proceed(
+                        chain.request().newBuilder()
+                                .header("Authorization", "Bearer " + token)
+                                .build()))
+                .build();
+
+        Retrofit retrofitWithToken = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofitWithToken.create(TreballadorApi.class);
+    }
+    public static DiagnosticApi getDiagnosticApi(String token) {
+        OkHttpClient client = new OkHttpClient.Builder()
+                .hostnameVerifier((hostname, session) -> true)
+                .addInterceptor(chain -> chain.proceed(
+                        chain.request().newBuilder()
+                                .header("Authorization", "Bearer " + token)
+                                .build()))
+                .build();
+
+        Retrofit retrofitWithToken = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofitWithToken.create(DiagnosticApi.class);
+    }
+
 }

@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AuthServiceClient {
 
     /** URL base per a les crides d'autenticació. */
-    private static final String BASE_URL = "http://localhost:8083/auth/";
+    private static final String BASE_URL = "https://localhost:8083/auth/";
 
     private Retrofit retrofit;
     private AuthService authService;
@@ -35,6 +35,7 @@ public class AuthServiceClient {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+                .hostnameVerifier((hostname, session) -> true)
                 .build();
 
         this.retrofit = new Retrofit.Builder()

@@ -61,4 +61,10 @@ public interface ClientApi {
      */
     @DELETE("/client/{id}")
     Call<Void> deleteClient(@Path("id") Long id, @Header("Authorization") String token);
+
+@PUT("/client/update_client")
+Call<Void> updateClientClient(@Body Client client, @Header("Authorization") String token);
+
+@DELETE("/client/delete_client")
+Call<Void> deleteClientClient(@Header("Authorization") String token);
 }

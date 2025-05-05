@@ -38,4 +38,5 @@ public class HistorialService {
         HistorialApi api = RetrofitApp.getHistorialApi(token);
         api.updateHistorial("Bearer " + token, historial).enqueue(callback);
     }
+
 }

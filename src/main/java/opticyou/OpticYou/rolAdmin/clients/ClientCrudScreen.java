@@ -39,12 +39,16 @@ public class ClientCrudScreen extends JPanel {
     private ClientController controller;
     private Long historialIdSeleccionat;
 
+    boolean esTreballador;
+
     /**
      * Constructor que crea i inicialitza la pantalla CRUD de clients.
      *
      * @param token Token d'autenticació (actualment no utilitzat directament en aquesta classe).
      */
-    public ClientCrudScreen(String token) {
+    public ClientCrudScreen(String token, boolean esTreballador) {
+        this.esTreballador = esTreballador;
+
         setLayout(new BorderLayout());
         setBackground(new Color(173, 216, 230));
 
@@ -112,6 +116,9 @@ public class ClientCrudScreen extends JPanel {
         btnAfegir = new JButton("Afegir Client");
         btnActualitzar = new JButton("Actualitzar Client");
         btnEliminar = new JButton("Eliminar Client");
+        if (esTreballador) {
+            btnEliminar.setEnabled(false); // O btnEliminar.setVisible(false);
+        }
         btnTornar = new JButton("Tornar");
 
         buttonPanel.add(btnAfegir);

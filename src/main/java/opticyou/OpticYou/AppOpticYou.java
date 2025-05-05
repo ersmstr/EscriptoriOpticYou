@@ -17,6 +17,8 @@ public class AppOpticYou {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            System.out.println("trustStore = " + System.getProperty("javax.net.ssl.trustStore"));
+            System.out.println("trustStorePassword = " + System.getProperty("javax.net.ssl.trustStorePassword"));
 
             new InitScreen(APP_NAME); // Inicia la finestra principal
         });
