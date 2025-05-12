@@ -1,32 +1,50 @@
-#OpticYouEsc
-# GestioOptiques
-## Observacions
-Aquesta aplicació ha estat desenvolupada amb Java Swing i segueix el patró MVC per separar la lògica del negoci de la interfície d'usuari.
-Inclou connexió amb una base de dades PostgreSQL per a la gestió de dades.
-S'han utilitzat llibreries externes com FlatLaf per millorar l'estil de la interfície.
+# OpticYouEsc – Gestió d'Òptiques
 
-## Descripció
-**GestionClientesApp** és una aplicació d'escriptori desenvolupada en Java Swing que permet gestionar les dades dels clients, les seves cites i les seves prescripcions. L'aplicació compta amb dues interfícies principals: una per al negoci i una altra per a l'administrador de l'aplicació. Es connecta a un servidor remot mitjançant Retrofit per a la gestió de dades.
+## 📝 Descripció
+**OpticYouEsc** és una aplicació d'escriptori desenvolupada amb **Java Swing** que permet gestionar òptiques mitjançant una interfície gràfica moderna i funcional. Utilitza el patró **MVC** per separar la lògica de negoci de la interfície d'usuari i es comunica amb un servidor backend mitjançant **Retrofit**.
 
-## Característiques
-- Gestió de clients, cites i prescripcions.
-- Interfície intuïtiva desenvolupada en Java Swing.
-- Connexió a servidor mitjançant Retrofit.
-- Dos tipus d'usuaris: negoci i administrador.
+L’aplicació admet dos perfils d’usuari:
+- **Administrador**: pot gestionar clients, treballadors, diagnòstics i més.
+- **Treballador**: accés limitat a les funcionalitats relacionades amb la seva clínica.
 
-## Patrons utilitzats
+## 🛠️ Tecnologies i biblioteques
 
-- **Java Swing** per a la interfície gràfica.
-- **Retrofit** per a la comunicació amb el servidor.
-- **Pgadmin/PostgreSQL** (segons el servidor backend).
-- **Maven per a la gestió de dependències.
+- **Java 21+** – Llenguatge principal.
+- **Java Swing** – Interfície gràfica.
+- **Retrofit** – Client HTTP per a comunicació amb l'API REST.
+- **PostgreSQL / PgAdmin** – Base de dades utilitzada al backend.
+- **FlatLaf** – Llibreria per estil modern a Swing.
+- **Maven** – Gestor de projectes i dependències.
 
-## Fitxer per connectar amb el servidor (Retrofit)
--** ApiClient 
+## ✅ Característiques principals
 
-### Prerequisits
-- Tenir instal·lat **JDK 21+**.
-- Tenir configurat **Maven** 
-- Disposar d'accés al servidor backend.
+- Gestió de **clients**, **cites**, **diagnòstics** i **treballadors**.
+- **Pantalles adaptades** al rol de l'usuari.
+- **Connexió segura** amb token JWT mitjançant Retrofit.
+- **Actualització dinàmica** de la interfície segons les accions.
+- **Modularitat** i mantenibilitat gràcies al patró MVC.
+
+## 📁 Estructura del projecte
+
+src/
+├── model/ # Classes de domini (Client, Treballador, etc.)
+├── service/ # Serveis que encapsulen les crides Retrofit
+├── data/ # Interfícies API (Retrofit)
+├── rolAdmin/ # Pantalles i controladors per administradors
+├── rolTreballador/ # Pantalles per usuaris treballadors
+├── auth/ # Login i gestió de token
+├── main/ # Punt d’entrada de l'aplicació
 
 
+## ⚙️ Requisits previs
+
+- **JDK 21** o superior
+- **Maven** instal·lat i configurat
+- Accés al **servidor backend** (en funcionament)
+
+## 🚀 Execució
+
+1. Clona el repositori:
+   ```bash
+   git clone https://github.com/ersmstr/EscriptoriOpticYou.git
+git   cd OpticYouEsc
