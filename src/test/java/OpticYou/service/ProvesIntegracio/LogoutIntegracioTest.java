@@ -23,7 +23,7 @@ public class LogoutIntegracioTest {
         CountDownLatch latch = new CountDownLatch(1);
 
         // LOGIN
-        authService.login(new LoginRequestDTO("aaa@a.com", "1234"))
+        authService.login(new LoginRequestDTO("admin@exemple.com", "admin123"))
                 .enqueue(new Callback<LoginResponseDTO>() {
                     @Override
                     public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {

@@ -21,40 +21,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AuthServiceClient {
 
     /** URL base per a les crides d'autenticació. */
-    private static final String BASE_URL = "https://localhost:8083/auth/";
+    //private static final String BASE_URL = "https://localhost:8083/auth/";
 
     private Retrofit retrofit;
     private AuthService authService;
 
-    /**
-     * Constructor principal. Configura Retrofit amb logging i crea el servei {@link AuthService}.
-     */
     public AuthServiceClient() {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .hostnameVerifier((hostname, session) -> true)
-                .build();
-
-        this.retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
+        this.retrofit = RetrofitApp.getClient();
         this.authService = retrofit.create(AuthService.class);
     }
-
-    /**
-     * Constructor alternatiu per a testing.
-     *
-     * @param authService Instància mock o alternativa de {@link AuthService}.
-     */
     public AuthServiceClient(AuthService authService) {
         this.authService = authService;
     }
+
+
+
+
 
     /**
      * Fa una petició de login amb email i contrasenya.

@@ -27,7 +27,7 @@ public interface AuthService {
      * @param loginRequest Objecte amb les credencials de l'usuari.
      * @return {@link Call} que retorna un {@link LoginResponseDTO} amb el token JWT si és correcte.
      */
-    @POST("login-user")
+    @POST("auth/login-user")
     Call<LoginResponseDTO> login(@Body LoginRequestDTO loginRequest);
 
     /**

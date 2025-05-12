@@ -30,7 +30,7 @@ public class ClientIntegracioCRUDTest {
         CountDownLatch latch = new CountDownLatch(1);
 
         // 1. LOGIN
-        authClient.getAuthService().login(new LoginRequestDTO("aaa@a.com", "1234"))
+        authClient.getAuthService().login(new LoginRequestDTO("admin@exemple.com", "admin123"))
                 .enqueue(new Callback<>() {
                     @Override
                     public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {

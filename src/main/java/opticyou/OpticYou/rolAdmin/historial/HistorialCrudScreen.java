@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
- * Vista Swing per gestionar els historials mèdics.
+ * Vista Swing per gestionar els historials dels clients.
  * <p>
  * Permet visualitzar, editar i actualitzar els historials dels clients.
  */
@@ -237,7 +237,7 @@ public class HistorialCrudScreen extends JPanel {
 
     class ButtonEditor extends DefaultCellEditor {
         private JButton button;
-        private Long historialId;
+        private Long historialId;  // Aquesta variable no és necessària realment, es podria eliminar
 
         public ButtonEditor(JCheckBox checkBox) {
             super(checkBox);
@@ -245,21 +245,26 @@ public class HistorialCrudScreen extends JPanel {
             button.setOpaque(true);
 
             button.addActionListener(e -> {
-                if (historialId != null) {
+                fireEditingStopped();
+
+                // ✅ Comprovem que hi ha un historial seleccionat
+                if (idHistorialSeleccionat != null) {
+                    System.out.println("Obrint diagnòstics per historialId: " + idHistorialSeleccionat);
                     DiagnosticCrudScreen diagScreen = new DiagnosticCrudScreen(
-                            historialId,
+                            idHistorialSeleccionat,
                             new DiagnosticController(token, SwingUtilities.getWindowAncestor(HistorialCrudScreen.this)),
                             token
                     );
                     diagScreen.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(HistorialCrudScreen.this, "Selecciona un historial abans d'obrir els diagnòstics.");
                 }
             });
         }
 
         @Override
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                                                     boolean isSelected, int row, int column) {
-            historialId = (Long) table.getValueAt(row, 0);
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            historialId = (Long) table.getValueAt(row, 0);  // Continua guardant per si el vols usar
             return button;
         }
 

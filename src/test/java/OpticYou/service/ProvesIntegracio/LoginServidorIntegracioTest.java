@@ -28,8 +28,8 @@ public class LoginServidorIntegracioTest {
     @Test
     public void testLoginCorrecte() {
         // Credencials correctes
-        String email = "bbb@a.com";
-        String password = "1234";
+        String email = "admin@exemple.com";
+        String password = "admin123";
 
         // Creem la petició de login
         LoginRequestDTO loginRequest = new LoginRequestDTO(email, password);

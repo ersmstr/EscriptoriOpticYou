@@ -11,13 +11,35 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Controlador per gestionar lògica de negoci i accions relacionades amb la gestió de treballadors.
+ * <p>
+ * Interactua amb la pantalla {@link TreballadorCrudScreen} i amb el servei {@link TreballadorService}
+ * per realitzar operacions CRUD (crear, llegir, actualitzar i eliminar treballadors).
+ * </p>
+ *
+ * @author mrami
+ */
 public class TreballadorController {
 
+    /** Referència a la interfície gràfica de gestió de treballadors. */
     private final TreballadorCrudScreen screen;
+
+    /** Servei que proporciona les operacions d'accés a dades dels treballadors. */
     private final TreballadorService service;
+
+    /** Token JWT per a l'autenticació de l'usuari actual. */
     private final String token;
+
+    /** Llista de treballadors recuperats del backend. */
     private List<Treballador> llistaTreballadors;
 
+    /**
+     * Constructor del controlador. Inicia els listeners, la taula i carrega les dades.
+     *
+     * @param screen Pantalla de gestió de treballadors.
+     * @param token  Token d'autenticació.
+     */
     public TreballadorController(TreballadorCrudScreen screen, String token) {
         this.screen = screen;
         this.token = token;
@@ -30,22 +52,29 @@ public class TreballadorController {
         initTableSelection();
     }
 
+    /**
+     * Assigna els listeners als botons de la pantalla.
+     */
     private void initListeners() {
         screen.setAfegirListener(e -> afegirTreballador());
         screen.setEliminarListener(e -> eliminarTreballadorSeleccionat());
         screen.setModificarListener(e -> actualitzarTreballadorSeleccionat());
     }
 
+    /**
+     * Valida si el formulari conté tots els camps obligatoris (excepte contrasenya).
+     *
+     * @return Cert si el formulari és vàlid, fals altrament.
+     */
     private boolean validarFormulari() {
-        if (screen.getNom().isBlank() || screen.getEmail().isBlank() || screen.getContrasenya().isBlank()
+        return !(screen.getNom().isBlank() || screen.getEmail().isBlank() || screen.getContrasenya().isBlank()
                 || screen.getEspecialitat().isBlank() || screen.getIniciJornada().isBlank()
-                || screen.getDiesJornada().isBlank() || screen.getFiJornada().isBlank()) {
-            JOptionPane.showMessageDialog(screen, "Tots els camps són obligatoris.", "Formulari incomplet", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-        return true;
+                || screen.getDiesJornada().isBlank() || screen.getFiJornada().isBlank());
     }
 
+    /**
+     * Afegeix un nou treballador utilitzant les dades del formulari.
+     */
     private void afegirTreballador() {
         if (!validarFormulariCreacio()) {
             JOptionPane.showMessageDialog(screen, "Tots els camps són obligatoris per crear el treballador.", "Formulari incomplet", JOptionPane.WARNING_MESSAGE);
@@ -74,6 +103,9 @@ public class TreballadorController {
         });
     }
 
+    /**
+     * Elimina el treballador seleccionat a la taula després de confirmació.
+     */
     private void eliminarTreballadorSeleccionat() {
         Long id = screen.getIdTreballadorSeleccionat();
 
@@ -108,6 +140,9 @@ public class TreballadorController {
         });
     }
 
+    /**
+     * Actualitza el treballador seleccionat amb les dades del formulari.
+     */
     private void actualitzarTreballadorSeleccionat() {
         Long id = screen.getIdTreballadorSeleccionat();
 
@@ -143,7 +178,9 @@ public class TreballadorController {
         });
     }
 
-
+    /**
+     * Carrega la llista de treballadors des del backend i l’omple a la taula.
+     */
     public void carregarTreballadors() {
         service.carregarTreballadors(token, new Callback<>() {
             @Override
@@ -180,6 +217,9 @@ public class TreballadorController {
         });
     }
 
+    /**
+     * Inicialitza el comportament de selecció de files a la taula per carregar dades al formulari.
+     */
     private void initTableSelection() {
         screen.getTreballadorTable().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -194,12 +234,24 @@ public class TreballadorController {
         });
     }
 
+    /**
+     * Obté el treballador de la llista en funció de la fila seleccionada.
+     *
+     * @param fila Índex de fila seleccionada.
+     * @return Treballador corresponent o null si no és vàlid.
+     */
     public Treballador getTreballadorPerFila(int fila) {
         if (llistaTreballadors != null && fila >= 0 && fila < llistaTreballadors.size()) {
             return llistaTreballadors.get(fila);
         }
         return null;
     }
+
+    /**
+     * Valida que tots els camps del formulari estiguin plens per crear un treballador.
+     *
+     * @return true si tots els camps són vàlids.
+     */
     private boolean validarFormulariCreacio() {
         return !screen.getNom().isBlank()
                 && !screen.getEmail().isBlank()
@@ -212,6 +264,11 @@ public class TreballadorController {
                 && !screen.getClinicaId().isBlank();
     }
 
+    /**
+     * Valida que tots els camps (excepte contrasenya) estiguin plens per modificar un treballador.
+     *
+     * @return true si els camps requerits són vàlids.
+     */
     private boolean validarFormulariModificacio() {
         return !screen.getNom().isBlank()
                 && !screen.getEmail().isBlank()
@@ -222,5 +279,4 @@ public class TreballadorController {
                 && !screen.getFiJornada().isBlank()
                 && !screen.getClinicaId().isBlank();
     }
-
 }

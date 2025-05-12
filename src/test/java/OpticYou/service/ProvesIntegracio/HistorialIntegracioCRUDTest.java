@@ -29,7 +29,7 @@ public class HistorialIntegracioCRUDTest {
         AuthServiceClient authClient = new AuthServiceClient();
         HistorialService historialService = new HistorialService();
 
-        authClient.getAuthService().login(new LoginRequestDTO("aaa@a.com", "1234"))
+        authClient.getAuthService().login(new LoginRequestDTO("admin@exemple.com", "admin123"))
                 .enqueue(new Callback<LoginResponseDTO>() {
                     @Override
                     public void onResponse(Call<LoginResponseDTO> call, Response<LoginResponseDTO> response) {

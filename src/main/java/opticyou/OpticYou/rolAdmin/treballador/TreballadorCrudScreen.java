@@ -1,7 +1,6 @@
 package opticyou.OpticYou.rolAdmin.treballador;
 
 import opticyou.OpticYou.model.Treballador;
-import opticyou.OpticYou.rolAdmin.treballador.TreballadorController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -10,217 +9,226 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
- * Pantalla de CRUD per a la gestió de treballadors.
- * autor: mrami
+ * Pantalla d'interfície gràfica per gestionar treballadors (crear, consultar, actualitzar, eliminar).
+ * <p>
+ * Proporciona un formulari i una taula per visualitzar i manipular dades de treballadors.
+ * Inclou control d'accions mitjançant {@link TreballadorController}.
+ * </p>
+ *
+ * @author mrami
  */
-     public class TreballadorCrudScreen extends JPanel {
+public class TreballadorCrudScreen extends JPanel {
 
-        private JTextField txtNom;
-        private JTextField txtEmail;
-        private JTextField txtContrasenya;
-        private JTextField txtEspecialitat;
-        private JComboBox<String> comboEstat;
-        private JTextField txtIniciJornada;
-        private JTextField txtDiesJornada;
-        private JTextField txtFiJornada;
-        private JTextField txtClinicaId;
+    // Components del formulari
+    private JTextField txtNom;
+    private JTextField txtEmail;
+    private JTextField txtContrasenya;
+    private JTextField txtEspecialitat;
+    private JComboBox<String> comboEstat;
+    private JTextField txtIniciJornada;
+    private JTextField txtDiesJornada;
+    private JTextField txtFiJornada;
+    private JTextField txtClinicaId;
 
-        private JButton btnAfegir, btnActualitzar, btnEliminar, btnTornar;
-        private JTable treballadorTable;
+    // Botons d'acció
+    private JButton btnAfegir, btnActualitzar, btnEliminar, btnTornar;
 
-        private Long idTreballadorSeleccionat;
-        private TreballadorController controller;
-        private Long historialIdSeleccionat;
+    // Taula per llistar treballadors
+    private JTable treballadorTable;
 
-        boolean esTreballador;
+    // Identificador del treballador seleccionat
+    private Long idTreballadorSeleccionat;
 
-        public TreballadorCrudScreen(String token, boolean esTreballador) {
-            this.esTreballador = esTreballador;
+    // Controlador associat
+    private TreballadorController controller;
 
-            setLayout(new BorderLayout());
-            setBackground(new Color(173, 216, 230));
+    // Identificador de l'historial (no usat actualment)
+    private Long historialIdSeleccionat;
 
-            JPanel leftPanel = new JPanel(new GridBagLayout());
-            leftPanel.setBackground(new Color(173, 216, 230));
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.insets = new Insets(10, 10, 5, 10);
-            gbc.fill = GridBagConstraints.HORIZONTAL;
+    // Indica si l'usuari actual és treballador
+    boolean esTreballador;
 
-            int row = 0;
+    /**
+     * Crea la pantalla de gestió de treballadors.
+     *
+     * @param token         Token d'autenticació.
+     * @param esTreballador Indica si l'usuari és treballador (per limitar accions).
+     */
+    public TreballadorCrudScreen(String token, boolean esTreballador) {
+        this.esTreballador = esTreballador;
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Nom:"), gbc);
-            txtNom = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtNom, gbc); row++;
+        setLayout(new BorderLayout());
+        setBackground(new Color(173, 216, 230));
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Email:"), gbc);
-            txtEmail = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtEmail, gbc); row++;
+        // Formulari a l'esquerra
+        JPanel leftPanel = new JPanel(new GridBagLayout());
+        leftPanel.setBackground(new Color(173, 216, 230));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 5, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Contrasenya:"), gbc);
-            txtContrasenya = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtContrasenya, gbc); row++;
+        int row = 0;
+        addFormRow(leftPanel, gbc, row++, "Nom:", txtNom = new JTextField(20));
+        addFormRow(leftPanel, gbc, row++, "Email:", txtEmail = new JTextField(20));
+        addFormRow(leftPanel, gbc, row++, "Contrasenya:", txtContrasenya = new JTextField(20));
+        addFormRow(leftPanel, gbc, row++, "Especialitat:", txtEspecialitat = new JTextField(20));
+        addFormRow(leftPanel, gbc, row++, "Estat:", comboEstat = new JComboBox<>(new String[]{"actiu", "inactiu"}));
+        addFormRow(leftPanel, gbc, row++, "Inici Jornada:", txtIniciJornada = new JTextField(20));
+        addFormRow(leftPanel, gbc, row++, "Fi Jornada:", txtFiJornada = new JTextField(20));
+        addFormRow(leftPanel, gbc, row++, "Dies Jornada:", txtDiesJornada = new JTextField(20));
+        addFormRow(leftPanel, gbc, row++, "ID Clínica:", txtClinicaId = new JTextField(20));
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Especialitat:"), gbc);
-            txtEspecialitat = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtEspecialitat, gbc); row++;
+        // Botons d'acció
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.setBackground(new Color(173, 216, 230));
+        btnAfegir = new JButton("Afegir");
+        btnActualitzar = new JButton("Actualitzar");
+        btnEliminar = new JButton("Eliminar");
+        if (esTreballador) btnEliminar.setEnabled(false);
+        btnTornar = new JButton("Tornar");
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Estat:"), gbc);
-            comboEstat = new JComboBox<>(new String[]{"actiu", "inactiu"});
-            gbc.gridx = 1;
-            leftPanel.add(comboEstat, gbc); row++;
+        buttonPanel.add(btnAfegir);
+        buttonPanel.add(btnActualitzar);
+        buttonPanel.add(btnEliminar);
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Inici Jornada:"), gbc);
-            txtIniciJornada = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtIniciJornada, gbc); row++;
+        gbc.gridx = 0; gbc.gridy = row++; gbc.gridwidth = 2;
+        leftPanel.add(buttonPanel, gbc);
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Fi Jornada:"), gbc);
-            txtFiJornada = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtFiJornada, gbc); row++;
+        gbc.gridy = row++;
+        leftPanel.add(btnTornar, gbc);
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("Dies Jornada:"), gbc);
-            txtDiesJornada = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtDiesJornada, gbc); row++;
+        // Taula a la dreta
+        treballadorTable = new JTable(new DefaultTableModel(new Object[][]{}, new String[]{
+                "ID", "Nom", "Email", "Especialitat", "Estat", "Inici Jornada", "Dies Jornada", "Fi Jornada", "Clínica"
+        }));
 
-            gbc.gridx = 0; gbc.gridy = row;
-            leftPanel.add(new JLabel("ID Clínica:"), gbc);
-            txtClinicaId = new JTextField(20);
-            gbc.gridx = 1;
-            leftPanel.add(txtClinicaId, gbc); row++;
+        JScrollPane tableScroll = new JScrollPane(treballadorTable);
+        tableScroll.getViewport().setBackground(new Color(173, 216, 230));
 
-            JPanel buttonPanel = new JPanel(new FlowLayout());
-            buttonPanel.setBackground(new Color(173, 216, 230));
-            btnAfegir = new JButton("Afegir");
-            btnActualitzar = new JButton("Actualitzar");
-            btnEliminar = new JButton("Eliminar");
-            if (esTreballador) btnEliminar.setEnabled(false);
-            btnTornar = new JButton("Tornar");
+        // Divisió esquerra-dreta
+        JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(leftPanel), tableScroll);
+        split.setDividerLocation(400);
+        split.setResizeWeight(0.5);
 
-            buttonPanel.add(btnAfegir);
-            buttonPanel.add(btnActualitzar);
-            buttonPanel.add(btnEliminar);
+        add(split, BorderLayout.CENTER);
+        setPreferredSize(new Dimension(1000, 600));
+    }
 
-            gbc.gridx = 0; gbc.gridy = row++;
-            gbc.gridwidth = 2;
-            leftPanel.add(buttonPanel, gbc);
+    /**
+     * Afegeix una fila de formulari al panell.
+     */
+    private void addFormRow(JPanel panel, GridBagConstraints gbc, int row, String label, JComponent field) {
+        gbc.gridx = 0; gbc.gridy = row;
+        panel.add(new JLabel(label), gbc);
+        gbc.gridx = 1;
+        panel.add(field, gbc);
+    }
 
-            gbc.gridy = row++;
-            leftPanel.add(btnTornar, gbc);
+    // Getters del formulari
+    public String getNom() { return txtNom.getText(); }
+    public String getEmail() { return txtEmail.getText(); }
+    public String getContrasenya() { return txtContrasenya.getText(); }
+    public String getEspecialitat() { return txtEspecialitat.getText(); }
+    public String getEstat() { return (String) comboEstat.getSelectedItem(); }
+    public String getIniciJornada() { return txtIniciJornada.getText(); }
+    public String getFiJornada() { return txtFiJornada.getText(); }
+    public String getDiesJornada() { return txtDiesJornada.getText(); }
+    public String getClinicaId() { return txtClinicaId.getText(); }
 
-            treballadorTable = new JTable(new DefaultTableModel(new Object[][]{}, new String[]{
-                    "ID", "Nom", "Email", "Especialitat", "Estat", "Inici Jornada", "Dies Jornada","Fi Jornada","Clínica"
-            }));
+    // Assignació d'ActionListeners
+    public void setAfegirListener(ActionListener l) { btnAfegir.addActionListener(l); }
+    public void setModificarListener(ActionListener l) { btnActualitzar.addActionListener(l); }
+    public void setEliminarListener(ActionListener l) { btnEliminar.addActionListener(l); }
+    public void setTornarListener(ActionListener l) { btnTornar.addActionListener(l); }
 
-            JScrollPane tableScroll = new JScrollPane(treballadorTable);
-            tableScroll.getViewport().setBackground(new Color(173, 216, 230));
+    /**
+     * Retorna l'ID del treballador seleccionat o -1 si no hi ha cap selecció.
+     */
+    public Long getIdTreballadorSeleccionat() {
+        return idTreballadorSeleccionat != null ? idTreballadorSeleccionat : -1;
+    }
 
-            JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(leftPanel), tableScroll);
-            split.setDividerLocation(400);
-            split.setResizeWeight(0.5);
+    /**
+     * Neteja tots els camps del formulari i des-selecciona la taula.
+     */
+    public void clearForm() {
+        txtNom.setText("");
+        txtEmail.setText("");
+        txtContrasenya.setText("");
+        txtEspecialitat.setText("");
+        comboEstat.setSelectedIndex(0);
+        txtIniciJornada.setText("");
+        txtFiJornada.setText("");
+        txtClinicaId.setText("");
+        txtDiesJornada.setText("");
+        idTreballadorSeleccionat = null;
+        historialIdSeleccionat = null;
+        treballadorTable.clearSelection();
+    }
 
-            add(split, BorderLayout.CENTER);
-            setPreferredSize(new Dimension(1000, 600));
+    /**
+     * Crea un objecte {@link Treballador} a partir del contingut del formulari.
+     */
+    public Treballador crearTreballadorDesdeFormulari() {
+        Treballador treballador = new Treballador();
+        treballador.setNom(getNom());
+        treballador.setEmail(getEmail());
+        if (!getContrasenya().isBlank()) {
+            treballador.setContrasenya(getContrasenya());
         }
-
-        public String getNom() { return txtNom.getText(); }
-        public String getEmail() { return txtEmail.getText(); }
-        public String getContrasenya() { return txtContrasenya.getText(); }
-        public String getEspecialitat() { return txtEspecialitat.getText(); }
-        public String getEstat() { return (String) comboEstat.getSelectedItem(); }
-        public String getIniciJornada() { return txtIniciJornada.getText(); }
-        public String getFiJornada() { return txtFiJornada.getText(); }
-        public String getDiesJornada() { return txtDiesJornada.getText(); }
-        public String getClinicaId() { return txtClinicaId.getText(); }
-
-        public void setAfegirListener(ActionListener l) { btnAfegir.addActionListener(l); }
-        public void setModificarListener(ActionListener l) { btnActualitzar.addActionListener(l); }
-        public void setEliminarListener(ActionListener l) { btnEliminar.addActionListener(l); }
-        public void setTornarListener(ActionListener l) { btnTornar.addActionListener(l); }
-
-        public Long getIdTreballadorSeleccionat() {
-            return idTreballadorSeleccionat != null ? idTreballadorSeleccionat : -1;
+        treballador.setRol("TREBALLADOR");
+        treballador.setEspecialitat(getEspecialitat());
+        treballador.setEstat(getEstat());
+        treballador.setIniciJornada(getIniciJornada());
+        treballador.setDiesJornada(getDiesJornada());
+        treballador.setFiJornada(getFiJornada());
+        treballador.setClinicaId(getClinicaId().isBlank() ? null : Long.parseLong(getClinicaId()));
+        if (idTreballadorSeleccionat != null) {
+            treballador.setIdTreballador(idTreballadorSeleccionat);
         }
+        return treballador;
+    }
 
-        public void clearForm() {
-            txtNom.setText("");
-            txtEmail.setText("");
-            txtContrasenya.setText("");
-            txtEspecialitat.setText("");
-            comboEstat.setSelectedIndex(0);
-            txtIniciJornada.setText("");
-            txtFiJornada.setText("");
-            txtClinicaId.setText("");
-            txtDiesJornada.setText("");
-            idTreballadorSeleccionat = null;
-            historialIdSeleccionat = null;
-            treballadorTable.clearSelection();
+    /**
+     * Mostra una llista de treballadors a la taula.
+     */
+    public void mostrarTreballadors(List<Treballador> treballadors) {
+        DefaultTableModel model = (DefaultTableModel) treballadorTable.getModel();
+        model.setRowCount(0);
+        for (Treballador t : treballadors) {
+            model.addRow(new Object[]{
+                    t.getIdTreballador(),
+                    t.getNom(),
+                    t.getEmail(),
+                    t.getEspecialitat(),
+                    t.getEstat(),
+                    t.getIniciJornada(),
+                    t.getDiesJornada(),
+                    t.getFiJornada(),
+                    t.getClinicaId()
+            });
         }
+    }
 
-        public Treballador crearTreballadorDesdeFormulari() {
-            Treballador treballador = new Treballador();
-            treballador.setNom(getNom());
-            treballador.setEmail(getEmail());
-            if (!getContrasenya().isBlank()) {
-                treballador.setContrasenya(getContrasenya());
-            }
+    /**
+     * Assigna el controlador de la pantalla.
+     */
+    public void setController(TreballadorController controller) {
+        this.controller = controller;
+    }
 
-            treballador.setRol("TREBALLADOR");
-            treballador.setEspecialitat(getEspecialitat());
-            treballador.setEstat(getEstat());
-            treballador.setIniciJornada(getIniciJornada());
-            treballador.setDiesJornada(getDiesJornada());
-            treballador.setFiJornada(getFiJornada());
-            treballador.setClinicaId(getClinicaId().isBlank() ? null : Long.parseLong(getClinicaId()));
-            if (idTreballadorSeleccionat != null) {
-                treballador.setIdTreballador(idTreballadorSeleccionat);
+    /**
+     * Retorna la taula de treballadors.
+     */
+    public JTable getTreballadorTable() {
+        return treballadorTable;
+    }
 
-            }
-            System.out.println("FI JORNADA del formulari abans de desar: " + getFiJornada());
-            return treballador;
-
-
-        }
-
-        public void mostrarTreballadors(List<Treballador> treballadors) {
-            DefaultTableModel model = (DefaultTableModel) treballadorTable.getModel();
-            model.setRowCount(0);
-            for (Treballador t : treballadors) {
-                model.addRow(new Object[]{
-                        t.getIdTreballador(),
-                        t.getNom(),
-                        t.getEmail(),
-                        t.getEspecialitat(),
-                        t.getEstat(),
-                        t.getIniciJornada(),
-                        t.getDiesJornada(),
-                        t.getFiJornada(),
-                        t.getClinicaId()
-
-                });
-            }
-        }
-
-        public void setController(TreballadorController controller) {
-            this.controller = controller;
-        }
-
-        public JTable getTreballadorTable() {
-            return treballadorTable;
-        }
+    /**
+     * Carrega un treballador al formulari per editar-lo.
+     *
+     * @param t Treballador a carregar.
+     */
     public void carregarTreballadorAlFormulari(Treballador t) {
         txtNom.setText(t.getNom());
         txtEmail.setText(t.getEmail());
@@ -233,6 +241,4 @@ import java.util.List;
         txtClinicaId.setText(t.getClinicaId() != null ? t.getClinicaId().toString() : "");
         idTreballadorSeleccionat = t.getIdTreballador();
     }
-
 }
-
